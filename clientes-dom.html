@@ -11,7 +11,7 @@
       <h1>Cadastro de Clientes</h1>
 
       <form id="form-cliente">
-        <input type="text" name="nome" id="nome" placeholder="nome" />
+        <input type="text" name="nome" id="nome" placeholder="Nome" />
 
         <input
           type="text"
@@ -20,9 +20,9 @@
           placeholder="Sobrenome"
         />
 
-        <input type="text" name="cpf" id="cpf" placeholder="Cpf" />
+        <input type="text" name="cpf" id="cpf" placeholder="CPF" />
 
-        <input type="email" name="email" id="email" placeholder="email" />
+        <input type="email" name="email" id="email" placeholder="E-mail" />
 
         <button type="submit">Adicionar Cliente</button>
       </form>
@@ -41,36 +41,7 @@
             </tr>
           </thead>
           <tbody id="tabela-clientes">
-            <tr>
-              <td>João</td>
-              <td>Silva</td>
-              <td>12345678901</td>
-              <td>joao@mail.com</td>
-              <td class="acoes">
-                <button class="editar">Editar</button>
-                <button class="excluir">Excluir</button>
-              </td>
-            </tr>
-            <tr>
-              <td>João</td>
-              <td>Silva</td>
-              <td>12345678901</td>
-              <td>joao@mail.com</td>
-              <td class="acoes">
-                <button class="editar">Editar</button>
-                <button class="excluir">Excluir</button>
-              </td>
-            </tr>
-            <tr>
-              <td>João</td>
-              <td>Silva</td>
-              <td>12345678901</td>
-              <td>joao@mail.com</td>
-              <td class="acoes">
-                <button class="editar">Editar</button>
-                <button class="excluir">Excluir</button>
-              </td>
-            </tr>
+            <!-- dados enviados por JS -->
           </tbody>
         </table>
       </div>
@@ -102,5 +73,6 @@
         </div>
       </div>
     </div>
+    <script src="script.js"></script>
   </body>
 </html>
