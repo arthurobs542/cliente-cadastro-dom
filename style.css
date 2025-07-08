@@ -1,0 +1,135 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f5f7fa;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.conteiner {
+  max-width: 50rem;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.conteiner h1 {
+  margin-bottom: 1.25rem;
+}
+
+form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+form input {
+  flex: 1 1 48%;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+}
+
+form button {
+  padding: 0.8rem 2rem;
+  background-color: #3f83f8;
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #2563eb;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: #f0f0f0;
+}
+
+td,
+th {
+  padding: 0.8rem;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.lista-clientes h2 {
+  margin-bottom: 1.25rem;
+}
+
+.acoes button {
+  padding: 0.4rem 0.8rem;
+  margin-right: 0.5rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.editar {
+  background-color: #facc15;
+  color: #333;
+}
+
+.excluir {
+  background-color: #ef4444;
+  color: white;
+}
+
+/* Modal */
+
+.modal {
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  width: 90%;
+  max-width: 31.25rem;
+}
+
+.modal-content h2,
+.modal-content h3 {
+  margin-bottom: 1.25rem;
+}
+
+.modal-content button {
+  padding: 0.8rem 2rem;
+  background-color: #3f83f8;
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.modal-content button:hover {
+  background-color: #2563eb;
+}
+
+.modal-content form {
+  flex-direction: column;
+}
