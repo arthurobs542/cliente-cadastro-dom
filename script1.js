@@ -239,3 +239,30 @@ if (dadosSalvos) {
 
 let indexEditando = null;
 let indexExcluindo = null;
+
+function exportarParaCSV() {
+  if (clientes.length === 0) {
+    alert("Nenhum cliente para exportar.");
+    return;
+  }
+
+  let csv = "Nome,Sobrenome,CPF,E-mail\n";
+
+  clientes.forEach((cliente) => {
+    csv += `${cliente.nome},${cliente.sobrenome},${cliente.cpf},${cliente.email}\n`;
+  });
+
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.setAttribute("href", url);
+  link.setAttribute("download", "clientes.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+document
+  .getElementById("btn-exportar")
+  .addEventListener("click", exportarParaCSV);
