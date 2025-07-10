@@ -142,3 +142,7 @@ th {
   width: 100%;
   text-align: center;
 }
+
+.modal-excluir {
+  display: none;
+}

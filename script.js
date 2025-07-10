@@ -3,16 +3,12 @@ const tabela = document.getElementById("tabela-clientes");
 const modalEditar = document.getElementById("modal-editar");
 const modalExcluir = document.getElementById("modal-excluir");
 
-// ---- inputs ----
-const inputs = document.querySelectorAll("input");
-
 const inputNome = document.getElementById("nome");
 const inputSobrenome = document.getElementById("sobrenome");
 const inputCpf = document.getElementById("cpf");
 const inputEmail = document.getElementById("email");
 
-//função para deixar o campo do cpf padrão
-aplicandoMascaraCpf(inputCpf);
+aplicandoMascaraCpf(inputCpf); //função para deixar o campo do cpf padrão
 
 // inputs modal editar
 
@@ -36,10 +32,8 @@ const btnCancelarExclusao = document.getElementById("cancelar-exclusao");
 
 let clientes = [];
 
-const dadosSalvos = localStorage.getItem("clientes");
-if (dadosSalvos) {
-  clientes = JSON.parse(dadosSalvos);
-  renderizarTabela();
+function salvarClientesNoLocalStore() {
+  localStorage.setItem("clientes", JSON.stringify(clientes));
 }
 
 function aplicandoMascaraCpf(campo) {
@@ -90,17 +84,16 @@ function validarEmail(email) {
 }
 
 //função auxiliar dos para exibir tabela
-
 function renderizarTabela() {
   tabela.innerHTML = "";
-  clientes.forEach((clientes) => {
+  clientes.forEach((cliente, index) => {
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
-    <td>${clientes.nome} </td>
-    <td>${clientes.sobrenome} </td>
-    <td> ${clientes.cpf}</td>
-    <td> ${clientes.email}</td>    
+    <td>${cliente.nome} </td>
+    <td>${cliente.sobrenome} </td>
+    <td> ${cliente.cpf}</td>
+    <td> ${cliente.email}</td>    
     `;
     //para criar td acoes
     const tdAcoes = document.createElement("td");
@@ -114,6 +107,15 @@ function renderizarTabela() {
     btnExcluir.textContent = "Excluir";
     btnExcluir.classList.add("excluir");
 
+    // tdAcoes.appendChild(btnEditar); //dados mocados
+    // tdAcoes.appendChild(btnExcluir); //dados mocados
+
+    //substituições
+    btnEditar.addEventListener("click", () => {
+      const index = clientes.indexOf(cliente); //armazena index
+      abrirModalEdicao(cliente, index);
+    });
+
     tdAcoes.appendChild(btnEditar);
     tdAcoes.appendChild(btnExcluir);
 
@@ -122,6 +124,21 @@ function renderizarTabela() {
     tabela.appendChild(tr);
   });
 }
+
+function abrirModalEdicao(cliente, index) {
+  inputEditNome.value = cliente.nome;
+  inputEditSobrenome.value = cliente.sobrenome;
+  inputEditCpf.value = cliente.cpf;
+  inputEditEmail.value = cliente.email;
+
+  indexEditando = index;
+
+  modalEditar.style.display = "block"; //mostra modal
+}
+
+btnCancelar.addEventListener("click", () => {
+  modalEditar.style.display = "none";
+});
 
 form.addEventListener("submit", function (event) {
   event.preventDefault(); //inpede o recarregamento da pagina
@@ -165,23 +182,38 @@ form.addEventListener("submit", function (event) {
 
   if (temErro) return;
 
-  const clienteExiste = clientes.some(
-    (c) => c.nome === nome && c.email === email
-  );
-
-  if (clienteExiste) {
-    showError("email", "Cliente já cadastrado");
-    return;
-  }
-
   const cliente = { nome, sobrenome, cpf, email };
 
   clientes.push(cliente);
-  localStorage.setItem("clientes", JSON.stringify(clientes));
+  salvarClientesNoLocalStore();
   renderizarTabela();
   limparInputs();
 });
 
-let indexEditando = null;
+formEdicao.addEventListener("submit", (event) => {
+  event.preventDefault();
 
+  const nome = inputEditNome.value.trim();
+  const sobrenome = inputEditSobrenome.value.trim();
+  const cpf = inputEditCpf.value.trim();
+  const email = inputEditEmail.value.trim();
+  //atualiza clientes do arrey
+  clientes[indexEditando] = { nome, sobrenome, cpf, email };
+
+  //salva novamente no localStorage
+  salvarClientesNoLocalStore();
+
+  //renderiza a tabela
+  renderizarTabela();
+  modalEditar.style.display = "none";
+});
+
+//recupera dados do localStorage ao carregar a página
+const dadosSalvos = localStorage.getItem("clientes");
+if (dadosSalvos) {
+  clientes = JSON.parse(dadosSalvos);
+  renderizarTabela();
+}
+
+let indexEditando = null;
 let indexExcluindo = null;
