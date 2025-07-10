@@ -1,18 +1,18 @@
-console.log(`Hello World`);
-
 const form = document.getElementById("form-cliente");
 const tabela = document.getElementById("tabela-clientes");
 const modalEditar = document.getElementById("modal-editar");
 const modalExcluir = document.getElementById("modal-excluir");
 
-console.log(modalExcluir);
-
 // ---- inputs ----
+const inputs = document.querySelectorAll("input");
 
 const inputNome = document.getElementById("nome");
 const inputSobrenome = document.getElementById("sobrenome");
 const inputCpf = document.getElementById("cpf");
 const inputEmail = document.getElementById("email");
+
+//função para deixar o campo do cpf padrão
+aplicandoMascaraCpf(inputCpf);
 
 // inputs modal editar
 
@@ -31,44 +31,61 @@ const btnCancelar = document.getElementById("cancelar-edicao");
 
 const btnConfirmaExclusao = document.getElementById("confirmar-exclusao");
 const btnCancelarExclusao = document.getElementById("cancelar-exclusao");
+
 //dentro do arrey vamos manupular os dados dos clientes
-let cliente = [
-  {
-    nome: "Rodrigo",
-    sobrenome: "Medeiros",
-    cpf: 1818282940921,
-    email: "rodrigo@gmail.com",
-  },
-  {
-    nome: "Arthur",
-    sobrenome: "Robson",
-    cpf: 829765279012,
-    email: "arthur@gmail.com",
-  },
-  {
-    nome: "Cesar",
-    sobrenome: "Luca",
-    cpf: 2927467291086,
-    email: "luca@gmail.com",
-  },
-];
 
-//
-let indexEditando = null;
+let clientes = [];
 
-let indexExcluindo = null;
+function aplicandoMascaraCpf(campo) {
+  campo.addEventListener("input", function () {
+    let valor = campo.value.replace(/\D/g, ""); // Remove tudo que não for número
 
-//vamos trabalhar com a exibição da dos dados
+    if (valor.length > 11) valor.slice(0, 11);
 
+    //aplicando o 000.000.000-00
+    valor = valor.replace(/(\d{3})(\d)/, "$1.$2");
+    valor = valor.replace(/(\d{3})(\d)/, "$1.$2");
+    valor = valor.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+    campo.value = valor;
+  });
+}
+
+function showError(idCampo, mensagem) {
+  //cria um span com uma mensagem de erro
+  document.getElementById(`erro-${idCampo}`).textContent = mensagem;
+  //muda a cor do input para vermelho junto
+  document.getElementById(idCampo).style.borderColor = "red";
+}
+
+function limparErros() {
+  // Limpa todos os spans com classe erro
+  document.querySelectorAll(".erro").forEach((el) => (el.textContent = ""));
+  //Remove a cor vermelha das bordas
+  document.querySelectorAll("input").forEach((input) => {
+    input.style.borderColor = "";
+  });
+}
+
+function validarCPF(cpf) {
+  cpf = cpf.replace(/\D/g, "");
+  return /^\d{11}$/.test(cpf);
+}
+
+function validarEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+//trabalhando com adição dos clientes
 function renderizarTabela() {
-  cliente.forEach((cliente) => {
+  tabela.innerHTML = "";
+  clientes.forEach((clientes) => {
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
-    <td>${cliente.nome} </td>
-    <td>${cliente.sobrenome} </td>
-    <td> ${cliente.cpf}</td>
-    <td> ${cliente.email}</td>    
+    <td>${clientes.nome} </td>
+    <td>${clientes.sobrenome} </td>
+    <td> ${clientes.cpf}</td>
+    <td> ${clientes.email}</td>    
     `;
     //para criar td acoes
     const tdAcoes = document.createElement("td");
@@ -91,4 +108,67 @@ function renderizarTabela() {
   });
 }
 
-renderizarTabela();
+form.addEventListener("submit", function (event) {
+  event.preventDefault(); //inpede o recarregamento da pagina
+
+  limparErros();
+  let temErro = false;
+
+  const nome = inputNome.value.trim();
+  const sobrenome = inputSobrenome.value.trim();
+  const cpf = inputCpf.value.trim();
+  const email = inputEmail.value.trim();
+
+  if (!nome) {
+    showError("nome", "Preencha o nome.");
+    temErro = true;
+  }
+
+  if (!sobrenome) {
+    showError("sobrenome", "Preencha o sobrenome.");
+    temErro = true;
+  }
+
+  if (!cpf) {
+    showError("cpf", "Preencha o CPF.");
+    temErro = true;
+  } else if (!validarCPF(cpf)) {
+    showError("cpf", "CPF inválido (use apenas 11 números).");
+    temErro = true;
+  } else if (clientes.some((c) => c.cpf === cpf)) {
+    showError("cpf", "CPF já cadastrado");
+    temErro = true;
+  }
+
+  if (!email) {
+    showError("email", "Preencha o e-mail.");
+    temErro = true;
+  } else if (!validarEmail(email)) {
+    showError("email", "E-mail inválido.");
+    temErro = true;
+  }
+
+  if (temErro) return;
+
+  const clienteExiste = clientes.some(
+    (c) => c.nome === nome && c.email === email
+  );
+
+  if (clienteExiste) {
+    showError("email", "Cliente já cadastrado");
+    return;
+  }
+
+  const cliente = { nome, sobrenome, cpf, email };
+
+  clientes.push(cliente);
+  //
+  //renderiza a tabela
+  renderizarTabela();
+});
+
+let indexEditando = null;
+
+let indexExcluindo = null;
+
+//add clientes

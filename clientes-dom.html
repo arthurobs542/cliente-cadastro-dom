@@ -12,6 +12,7 @@
 
       <form id="form-cliente">
         <input type="text" name="nome" id="nome" placeholder="Nome" />
+        <span class="erro" id="erro-nome"></span>
 
         <input
           type="text"
@@ -19,10 +20,19 @@
           id="sobrenome"
           placeholder="Sobrenome"
         />
+        <span class="erro" id="erro-sobrenome"></span>
 
-        <input type="text" name="cpf" id="cpf" placeholder="CPF" />
+        <input
+          type="text"
+          name="cpf"
+          id="cpf"
+          placeholder="000.000.000-00"
+          maxlength="14"
+        />
+        <span class="erro" id="erro-cpf"></span>
 
         <input type="email" name="email" id="email" placeholder="E-mail" />
+        <span class="erro" id="erro-email"></span>
 
         <button type="submit">Adicionar Cliente</button>
       </form>

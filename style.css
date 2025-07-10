@@ -6,7 +6,7 @@
 
 body {
   font-family: Arial, Helvetica, sans-serif;
-  background-color: #f5f7fa;
+  background-color: #6e6e6e;
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -132,4 +132,13 @@ th {
 
 .modal-content form {
   flex-direction: column;
+}
+
+.erro {
+  color: white;
+  font-size: 14px;
+  display: block;
+  background-color: #ef4444;
+  width: 100%;
+  text-align: center;
 }
