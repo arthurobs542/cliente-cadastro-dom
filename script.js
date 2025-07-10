@@ -36,6 +36,12 @@ const btnCancelarExclusao = document.getElementById("cancelar-exclusao");
 
 let clientes = [];
 
+const dadosSalvos = localStorage.getItem("clientes");
+if (dadosSalvos) {
+  clientes = JSON.parse(dadosSalvos);
+  renderizarTabela();
+}
+
 function aplicandoMascaraCpf(campo) {
   campo.addEventListener("input", function () {
     let valor = campo.value.replace(/\D/g, ""); // Remove tudo que não for número
@@ -66,6 +72,14 @@ function limparErros() {
   });
 }
 
+function limparInputs() {
+  //reseta inputs
+  inputNome.value = "";
+  inputSobrenome.value = "";
+  inputCpf.value = "";
+  inputEmail.value = "";
+}
+
 function validarCPF(cpf) {
   cpf = cpf.replace(/\D/g, "");
   return /^\d{11}$/.test(cpf);
@@ -75,7 +89,8 @@ function validarEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-//trabalhando com adição dos clientes
+//função auxiliar dos para exibir tabela
+
 function renderizarTabela() {
   tabela.innerHTML = "";
   clientes.forEach((clientes) => {
@@ -111,7 +126,7 @@ function renderizarTabela() {
 form.addEventListener("submit", function (event) {
   event.preventDefault(); //inpede o recarregamento da pagina
 
-  limparErros();
+  limparErros(); //funcção para limoar erros
   let temErro = false;
 
   const nome = inputNome.value.trim();
@@ -162,13 +177,11 @@ form.addEventListener("submit", function (event) {
   const cliente = { nome, sobrenome, cpf, email };
 
   clientes.push(cliente);
-  //
-  //renderiza a tabela
+  localStorage.setItem("clientes", JSON.stringify(clientes));
   renderizarTabela();
+  limparInputs();
 });
 
 let indexEditando = null;
 
 let indexExcluindo = null;
-
-//add clientes
