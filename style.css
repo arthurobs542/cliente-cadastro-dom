@@ -146,3 +146,7 @@ th {
 .modal-excluir {
   display: none;
 }
+
+.editar {
+  margin-bottom: 3px;
+}

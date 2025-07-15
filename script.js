@@ -143,7 +143,7 @@ function abrirModalEdicao(cliente, index) {
 
   indexEditando = index;
 
-  modalEditar.style.display = "block"; //mostra modal
+  modalEditar.style.display = "flex"; //mostra modal
 }
 //cancela edicção
 btnCancelar.addEventListener("click", () => {
